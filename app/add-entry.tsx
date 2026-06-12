@@ -6,6 +6,11 @@ import { colors, radius, spacing, typography } from "../constants/theme";
 import { usePets } from "../context/PetContext";
 import { ACTIVITY_LABELS, type ActivityType } from "../types/activity";
 
+import { Image } from "expo-image";
+import * as ImagePicker from "expo-image-picker";
+
+import { saveImageToDevice } from "../utils/saveImage";
+
 const ACTIVITY_TYPES: ActivityType[] = ["meal", "walk", "med", "vet", "play"];
 
 export default function AddEntryScreen() {
@@ -15,6 +20,28 @@ export default function AddEntryScreen() {
   );
   const [selectedType, setSelectedType] = useState<ActivityType>("meal");
 
+  const [photoUri, setPhotoUri] = useState<string | undefined>(undefined);
+
+  const pickImage = async (useCamera: boolean) => {
+    const permissionResult = useCamera
+      ? await ImagePicker.requestCameraPermissionsAsync()
+      : await ImagePicker.requestMediaLibraryPermissionsAsync();
+
+    if (!permissionResult.granted) {
+      return;
+    }
+
+    const result = useCamera
+      ? await ImagePicker.launchCameraAsync({ quality: 0.5 })
+      : await ImagePicker.launchImageLibraryAsync({ quality: 0.5 });
+
+    if (result.canceled) return;
+
+    const tempUri = result.assets[0].uri;
+    const permanentUri = await saveImageToDevice(tempUri);
+    setPhotoUri(permanentUri);
+  };
+
   const handleSave = () => {
     if (!selectedPetId) return;
 
@@ -23,6 +50,7 @@ export default function AddEntryScreen() {
       petId: selectedPetId,
       type: selectedType,
       date: new Date().toISOString(),
+      photoUri,
     });
     router.back();
   };
@@ -86,6 +114,29 @@ export default function AddEntryScreen() {
         ))}
       </View>
 
+      <Text style={typography.label}>PHOTO (OPTIONAL)</Text>
+      {photoUri && (
+        <>
+          <Image source={{ uri: photoUri }} style={styles.preview} />
+          <Pressable
+            onPress={() => setPhotoUri(undefined)}
+            style={styles.removeButton}
+          >
+            <Text style={[typography.bodyMedium, { color: colors.danger }]}>
+              Remove photo
+            </Text>
+          </Pressable>
+        </>
+      )}
+      <View style={styles.row}>
+        <Pressable style={styles.photoButton} onPress={() => pickImage(true)}>
+          <Text style={styles.chipText}>Take photo</Text>
+        </Pressable>
+        <Pressable style={styles.photoButton} onPress={() => pickImage(false)}>
+          <Text style={styles.chipText}>Choose from gallery</Text>
+        </Pressable>
+      </View>
+
       <Pressable style={styles.saveButton} onPress={handleSave}>
         <Text style={[typography.bodyMedium, { color: colors.textOnAccent }]}>
           Save
@@ -123,4 +174,20 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginTop: spacing.md,
   },
+  preview: {
+    width: "100%",
+    height: 180,
+    borderRadius: radius.md,
+    marginBottom: spacing.sm,
+  },
+  photoButton: {
+    flex: 1,
+    borderRadius: radius.md,
+    borderWidth: 1,
+    borderColor: colors.border,
+    backgroundColor: colors.surface,
+    paddingVertical: spacing.md,
+    alignItems: "center",
+  },
+  removeButton: { alignSelf: "flex-start", padding: spacing.sm },
 });

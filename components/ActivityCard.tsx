@@ -1,5 +1,6 @@
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
+import { Image } from "expo-image";
 import { colors, radius, spacing, typography } from "../constants/theme";
 import { ACTIVITY_LABELS, type Activity } from "../types/activity";
 
@@ -25,6 +26,9 @@ export function ActivityCard({
 
   return (
     <View style={styles.card}>
+      {activity.photoUri && (
+        <Image source={{ uri: activity.photoUri }} style={styles.thumbnail} />
+      )}
       <View style={styles.info}>
         <Text style={typography.heading}>{ACTIVITY_LABELS[activity.type]}</Text>
         <Text style={typography.caption}>
@@ -63,4 +67,5 @@ const styles = StyleSheet.create({
   info: { flex: 1, gap: spacing.xs },
   deleteButton: { padding: spacing.sm },
   pressed: { opacity: 0.6 },
+  thumbnail: { width: 48, height: 48, borderRadius: radius.sm },
 });
