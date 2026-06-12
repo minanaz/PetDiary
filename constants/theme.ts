@@ -1,3 +1,4 @@
+import { StyleSheet } from "react-native";
 export const colors = {
   // brand
   primary: "#3A6EA5",
@@ -40,3 +41,44 @@ export const fonts = {
 
 // Type scale
 export const fontSize = { xs: 12, sm: 14, md: 16, lg: 18, xl: 22, xxl: 28 };
+
+// reusable text styles
+export const typography = StyleSheet.create({
+  display: {
+    fontFamily: fonts.headingBold,
+    fontSize: fontSize.xxl,
+    color: colors.text,
+  },
+  title: {
+    fontFamily: fonts.heading,
+    fontSize: fontSize.xl,
+    color: colors.text,
+  },
+  heading: {
+    fontFamily: fonts.heading,
+    fontSize: fontSize.lg,
+    color: colors.text,
+  },
+  body: {
+    fontFamily: fonts.body,
+    fontSize: fontSize.md,
+    color: colors.text,
+    lineHeight: 22,
+  },
+  bodyMedium: {
+    fontFamily: fonts.bodyMedium,
+    fontSize: fontSize.md,
+    color: colors.text,
+  },
+  caption: {
+    fontFamily: fonts.body,
+    fontSize: fontSize.sm,
+    color: colors.textMuted,
+  },
+  label: {
+    fontFamily: fonts.bodySemiBold,
+    fontSize: fontSize.sm,
+    color: colors.text,
+    letterSpacing: 0.5,
+  },
+});
