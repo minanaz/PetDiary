@@ -1,53 +1,42 @@
-/**
- * Below are the colors that are used in the app. The colors are defined in the light and dark mode.
- * There are many other ways to style your app. For example, [Nativewind](https://www.nativewind.dev/), [Tamagui](https://tamagui.dev/), [unistyles](https://reactnativeunistyles.vercel.app), etc.
- */
+export const colors = {
+  // brand
+  primary: "#3A6EA5",
+  primaryDark: "#2B416C",
+  navy: "#1C3252",
+  accent: "#F5C000",
 
-import { Platform } from 'react-native';
+  // surfaces
+  background: "#F4F6F9",
+  surface: "#FFFFFF",
+  surfaceAlt: "#EAF0F6",
 
-const tintColorLight = '#0a7ea4';
-const tintColorDark = '#fff';
+  // text
+  text: "#1C3252",
+  textMuted: "#5B6B82",
+  textOnPrimary: "#FFFFFF",
+  textOnAccent: "#1C3252",
 
-export const Colors = {
-  light: {
-    text: '#11181C',
-    background: '#fff',
-    tint: tintColorLight,
-    icon: '#687076',
-    tabIconDefault: '#687076',
-    tabIconSelected: tintColorLight,
-  },
-  dark: {
-    text: '#ECEDEE',
-    background: '#151718',
-    tint: tintColorDark,
-    icon: '#9BA1A6',
-    tabIconDefault: '#9BA1A6',
-    tabIconSelected: tintColorDark,
-  },
+  // lines and feedback
+  border: "#DCE4ED",
+  success: "#2E7D5B",
+  danger: "#C0392B",
+  white: "#FFFFFF",
 };
 
-export const Fonts = Platform.select({
-  ios: {
-    /** iOS `UIFontDescriptorSystemDesignDefault` */
-    sans: 'system-ui',
-    /** iOS `UIFontDescriptorSystemDesignSerif` */
-    serif: 'ui-serif',
-    /** iOS `UIFontDescriptorSystemDesignRounded` */
-    rounded: 'ui-rounded',
-    /** iOS `UIFontDescriptorSystemDesignMonospaced` */
-    mono: 'ui-monospace',
-  },
-  default: {
-    sans: 'normal',
-    serif: 'serif',
-    rounded: 'normal',
-    mono: 'monospace',
-  },
-  web: {
-    sans: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
-    serif: "Georgia, 'Times New Roman', serif",
-    rounded: "'SF Pro Rounded', 'Hiragino Maru Gothic ProN', Meiryo, 'MS PGothic', sans-serif",
-    mono: "SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace",
-  },
-});
+// 4-point spacing scale
+export const spacing = { xs: 4, sm: 8, md: 12, lg: 16, xl: 24, xxl: 32 };
+
+// Corner radii.
+export const radius = { sm: 8, md: 12, lg: 16, pill: 999 };
+
+// Font families
+export const fonts = {
+  heading: "Poppins_600SemiBold",
+  headingBold: "Poppins_700Bold",
+  body: "Inter_400Regular",
+  bodyMedium: "Inter_500Medium",
+  bodySemiBold: "Inter_600SemiBold",
+};
+
+// Type scale
+export const fontSize = { xs: 12, sm: 14, md: 16, lg: 18, xl: 22, xxl: 28 };
