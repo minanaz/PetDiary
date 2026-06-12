@@ -4,7 +4,11 @@ import { usePets } from "@/context/PetContext";
 import { colors, radius, spacing, typography } from "../constants/theme";
 
 export default function Index() {
-  const { pets, addPet } = usePets();
+  const { pets, addPet, isLoading } = usePets();
+
+  if (isLoading) {
+    return <Text style={typography.body}>Loading...</Text>;
+  }
 
   const addTestPet = () => {
     addPet({
