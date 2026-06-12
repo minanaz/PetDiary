@@ -41,7 +41,14 @@ export default function RootLayout() {
           headerTitleStyle: { fontFamily: fonts.heading },
           contentStyle: { backgroundColor: colors.background },
         }}
-      />
+      >
+        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        <Stack.Screen name="pet/[id]" options={{ title: "Pet" }} />
+        <Stack.Screen
+          name="add-entry"
+          options={{ presentation: "modal", title: "Add Entry" }}
+        />
+      </Stack>
     </PetProvider>
   );
 }
