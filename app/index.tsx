@@ -1,8 +1,20 @@
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 
+import { usePets } from "@/context/PetContext";
 import { colors, radius, spacing, typography } from "../constants/theme";
 
 export default function Index() {
+  const { pets, addPet } = usePets();
+
+  const addTestPet = () => {
+    addPet({
+      id: Date.now().toString(),
+      name: "Biscuit",
+      breed: "Beagle",
+      createdAt: new Date().toISOString(),
+    });
+  };
+
   return (
     <ScrollView contentContainerStyle={styles.content}>
       <Text style={typography.display}>PetDiary</Text>
@@ -11,9 +23,10 @@ export default function Index() {
       </Text>
 
       <View style={styles.card}>
-        <Text style={typography.heading}>Poppins heading</Text>
-        <Text style={typography.body}>Inter body text — used everywhere.</Text>
-        <Text style={typography.caption}>Inter caption, muted</Text>
+        <Text style={typography.heading}>Pets in context: {pets.length}</Text>
+        <Text style={typography.body} onPress={addTestPet}>
+          Tap here to add a test pet
+        </Text>
       </View>
     </ScrollView>
   );

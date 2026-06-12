@@ -12,6 +12,7 @@ import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
 
+import { PetProvider } from "@/context/PetContext";
 import { colors, fonts } from "../constants/theme";
 
 SplashScreen.preventAutoHideAsync();
@@ -32,13 +33,15 @@ export default function RootLayout() {
   if (!fontsLoaded) return null;
 
   return (
-    <Stack
-      screenOptions={{
-        headerStyle: { backgroundColor: colors.navy },
-        headerTintColor: colors.white,
-        headerTitleStyle: { fontFamily: fonts.heading },
-        contentStyle: { backgroundColor: colors.background },
-      }}
-    />
+    <PetProvider>
+      <Stack
+        screenOptions={{
+          headerStyle: { backgroundColor: colors.navy },
+          headerTintColor: colors.white,
+          headerTitleStyle: { fontFamily: fonts.heading },
+          contentStyle: { backgroundColor: colors.background },
+        }}
+      />
+    </PetProvider>
   );
 }
