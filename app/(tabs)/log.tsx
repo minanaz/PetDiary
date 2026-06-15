@@ -1,3 +1,4 @@
+import * as Haptics from "expo-haptics";
 import { router } from "expo-router";
 import { FlatList, Pressable, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -35,7 +36,12 @@ export default function LogScreen() {
             <ActivityCard
               activity={item}
               petName={pet?.name ?? "Unknown pet"}
-              onDelete={() => deleteActivity(item.id)}
+              onDelete={() => {
+                Haptics.notificationAsync(
+                  Haptics.NotificationFeedbackType.Warning,
+                );
+                deleteActivity(item.id);
+              }}
             />
           );
         }}

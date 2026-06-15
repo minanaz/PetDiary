@@ -9,6 +9,7 @@ import { ACTIVITY_LABELS, type ActivityType } from "../types/activity";
 import { Image } from "expo-image";
 import * as ImagePicker from "expo-image-picker";
 
+import * as Haptics from "expo-haptics";
 import { saveImageToDevice } from "../utils/saveImage";
 
 const ACTIVITY_TYPES: ActivityType[] = ["meal", "walk", "med", "vet", "play"];
@@ -52,6 +53,7 @@ export default function AddEntryScreen() {
       date: new Date().toISOString(),
       photoUri,
     });
+    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
     router.back();
   };
 
