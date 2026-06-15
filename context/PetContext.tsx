@@ -15,6 +15,8 @@ interface PetContextValue {
   activities: Activity[];
   isLoading: boolean;
   addPet: (pet: Pet) => void;
+  updatePet: (pet: Pet) => void;
+  deletePet: (id: string) => void;
   addActivity: (activity: Activity) => void;
   deleteActivity: (id: string) => void;
 }
@@ -29,7 +31,6 @@ export function PetProvider({ children }: { children: ReactNode }) {
   const [activities, setActivities] = useState<Activity[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Load saved data once, when the app starts.
   useEffect(() => {
     const loadData = async () => {
       try {
@@ -46,14 +47,12 @@ export function PetProvider({ children }: { children: ReactNode }) {
     loadData();
   }, []);
 
-  // Save pets whenever the list changes (but not during the initial load).
   useEffect(() => {
     if (!isLoading) {
       AsyncStorage.setItem(PETS_KEY, JSON.stringify(pets));
     }
   }, [pets, isLoading]);
 
-  // Save activities whenever the list changes.
   useEffect(() => {
     if (!isLoading) {
       AsyncStorage.setItem(ACTIVITIES_KEY, JSON.stringify(activities));
@@ -62,6 +61,17 @@ export function PetProvider({ children }: { children: ReactNode }) {
 
   const addPet = (pet: Pet) => {
     setPets((prev) => [...prev, pet]);
+  };
+
+  const updatePet = (updatedPet: Pet) => {
+    setPets((prev) =>
+      prev.map((p) => (p.id === updatedPet.id ? updatedPet : p)),
+    );
+  };
+
+  const deletePet = (id: string) => {
+    setPets((prev) => prev.filter((p) => p.id !== id));
+    setActivities((prev) => prev.filter((a) => a.petId !== id)); // delete pet's activities too
   };
 
   const addActivity = (activity: Activity) => {
@@ -79,6 +89,8 @@ export function PetProvider({ children }: { children: ReactNode }) {
         activities,
         isLoading,
         addPet,
+        deletePet,
+        updatePet,
         addActivity,
         deleteActivity,
       }}

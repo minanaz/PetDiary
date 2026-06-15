@@ -51,6 +51,14 @@ export default function RootLayout() {
             name="add-entry"
             options={{ presentation: "modal", title: "Add Entry" }}
           />
+          <Stack.Screen
+            name="add-pet"
+            options={{ presentation: "modal", title: "Add Pet" }}
+          />
+          <Stack.Screen
+            name="edit-pet"
+            options={{ presentation: "modal", title: "Edit Pet" }}
+          />
         </Stack>
       </PetProvider>
     </GestureHandlerRootView>
