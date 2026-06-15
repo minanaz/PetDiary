@@ -11,6 +11,8 @@ import {
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
+import "react-native-gesture-handler";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 import { PetProvider } from "@/context/PetContext";
 import { colors, fonts } from "../constants/theme";
@@ -33,22 +35,24 @@ export default function RootLayout() {
   if (!fontsLoaded) return null;
 
   return (
-    <PetProvider>
-      <Stack
-        screenOptions={{
-          headerStyle: { backgroundColor: colors.navy },
-          headerTintColor: colors.white,
-          headerTitleStyle: { fontFamily: fonts.heading },
-          contentStyle: { backgroundColor: colors.background },
-        }}
-      >
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="pet/[id]" options={{ title: "Pet" }} />
-        <Stack.Screen
-          name="add-entry"
-          options={{ presentation: "modal", title: "Add Entry" }}
-        />
-      </Stack>
-    </PetProvider>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <PetProvider>
+        <Stack
+          screenOptions={{
+            headerStyle: { backgroundColor: colors.navy },
+            headerTintColor: colors.white,
+            headerTitleStyle: { fontFamily: fonts.heading },
+            contentStyle: { backgroundColor: colors.background },
+          }}
+        >
+          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+          <Stack.Screen name="pet/[id]" options={{ title: "Pet" }} />
+          <Stack.Screen
+            name="add-entry"
+            options={{ presentation: "modal", title: "Add Entry" }}
+          />
+        </Stack>
+      </PetProvider>
+    </GestureHandlerRootView>
   );
 }
