@@ -1,7 +1,14 @@
 import { Image } from "expo-image";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
-import { colors, radius, spacing, typography } from "../constants/theme";
+import { Ionicons } from "@expo/vector-icons";
+import {
+  colors,
+  radius,
+  shadow,
+  spacing,
+  typography,
+} from "../constants/theme";
 import type { Pet } from "../types/pet";
 
 interface PetCardProps {
@@ -19,7 +26,7 @@ export function PetCard({ pet, onPress }: PetCardProps) {
         <Image source={{ uri: pet.photoUri }} style={styles.photo} />
       ) : (
         <View style={[styles.photo, styles.placeholder]}>
-          <Text style={styles.placeholderText}>🐾</Text>
+          <Ionicons name="paw-outline" size={32} color={colors.textMuted} />
         </View>
       )}
       <View style={styles.info}>
@@ -36,8 +43,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: colors.surface,
     borderRadius: radius.lg,
-    borderWidth: 1,
-    borderColor: colors.border,
+    ...shadow,
     padding: spacing.md,
     gap: spacing.md,
   },

@@ -61,7 +61,13 @@ export default function PetDetailScreen() {
             style={[styles.photo, { width: photoSize, height: photoSize }]}
           />
         ) : (
-          <View style={[styles.photo, styles.placeholder]}>
+          <View
+            style={[
+              styles.photo,
+              styles.placeholder,
+              { width: photoSize, height: photoSize },
+            ]}
+          >
             <Text style={styles.placeholderText}>🐾</Text>
           </View>
         )}
@@ -91,9 +97,11 @@ export default function PetDetailScreen() {
         </View>
       )}
 
-      <View style={styles.statBox}>
-        <Text style={typography.title}>{petActivities.length}</Text>
-        <Text style={typography.caption}>
+      <View style={[styles.statBox, { backgroundColor: colors.accent }]}>
+        <Text style={[typography.title, { color: colors.textOnAccent }]}>
+          {petActivities.length}
+        </Text>
+        <Text style={[typography.caption, { color: colors.textOnAccent }]}>
           {petActivities.length === 1 ? "activity logged" : "activities logged"}
         </Text>
       </View>

@@ -1,25 +1,51 @@
 import { StyleSheet } from "react-native";
+// export const colors = {
+//   // brand
+//   primary: "#3A6EA5",
+//   primaryDark: "#2B416C",
+//   navy: "#1C3252",
+//   accent: "#F5C000",
+
+//   // surfaces
+//   background: "#F4F6F9",
+//   surface: "#FFFFFF",
+//   surfaceAlt: "#EAF0F6",
+
+//   // text
+//   text: "#1C3252",
+//   textMuted: "#5B6B82",
+//   textOnPrimary: "#FFFFFF",
+//   textOnAccent: "#1C3252",
+
+//   // lines and feedback
+//   border: "#DCE4ED",
+//   success: "#2E7D5B",
+//   danger: "#C0392B",
+//   white: "#FFFFFF",
+// };
+
 export const colors = {
-  // brand
-  primary: "#3A6EA5",
-  primaryDark: "#2B416C",
-  navy: "#1C3252",
-  accent: "#F5C000",
+  // Brand
+  primary: "#db835a",
+  // primary: "#D8784A",
+  primaryDark: "#B85F36",
+  navy: "#5C3D2E",
+  accent: "#E8A33D",
 
-  // surfaces
-  background: "#F4F6F9",
+  // Surfaces
+  background: "#FBF6EE",
   surface: "#FFFFFF",
-  surfaceAlt: "#EAF0F6",
+  surfaceAlt: "#F3E9D8",
 
-  // text
-  text: "#1C3252",
-  textMuted: "#5B6B82",
-  textOnPrimary: "#FFFFFF",
-  textOnAccent: "#1C3252",
+  // Text
+  text: "#5C3D2E",
+  textMuted: "#8C6F5E",
+  textOnPrimary: "#FFF8F0",
+  textOnAccent: "#5C3D2E",
 
-  // lines and feedback
-  border: "#DCE4ED",
-  success: "#2E7D5B",
+  // Lines + feedback
+  border: "#E8DCC8",
+  success: "#6B8E4E",
   danger: "#C0392B",
   white: "#FFFFFF",
 };
@@ -27,10 +53,8 @@ export const colors = {
 // 4-point spacing scale
 export const spacing = { xs: 4, sm: 8, md: 12, lg: 16, xl: 24, xxl: 32 };
 
-// Corner radii.
-export const radius = { sm: 8, md: 12, lg: 16, pill: 999 };
+export const radius = { sm: 8, md: 12, lg: 20, pill: 999 };
 
-// Font families
 export const fonts = {
   heading: "Poppins_600SemiBold",
   headingBold: "Poppins_700Bold",
@@ -39,7 +63,6 @@ export const fonts = {
   bodySemiBold: "Inter_600SemiBold",
 };
 
-// Type scale
 export const fontSize = { xs: 12, sm: 14, md: 16, lg: 18, xl: 22, xxl: 28 };
 
 // reusable text styles
@@ -82,3 +105,11 @@ export const typography = StyleSheet.create({
     letterSpacing: 0.5,
   },
 });
+
+export const shadow = {
+  shadowColor: colors.navy,
+  shadowOffset: { width: 0, height: 2 },
+  shadowOpacity: 0.08,
+  shadowRadius: 8,
+  elevation: 3,
+};

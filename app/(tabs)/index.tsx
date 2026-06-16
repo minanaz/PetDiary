@@ -8,10 +8,17 @@ import {
   Text,
   View,
 } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
 
+import { Ionicons } from "@expo/vector-icons";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { ActivityCard } from "../../components/ActivityCard";
-import { colors, radius, spacing, typography } from "../../constants/theme";
+import {
+  colors,
+  radius,
+  shadow,
+  spacing,
+  typography,
+} from "../../constants/theme";
 import { usePets } from "../../context/PetContext";
 import { getGreeting } from "../../utils/greeting";
 import { fetchWeather, type WeatherData } from "../../utils/weather";
@@ -56,9 +63,17 @@ export default function TodayScreen() {
     .slice(0, 3);
 
   return (
-    <SafeAreaView style={styles.safe} edges={["top"]}>
+    <View style={styles.screen}>
+      <SafeAreaView edges={["top"]} style={styles.headerSafe}>
+        <View style={styles.header}>
+          <Text style={styles.headerTitle}>PetDiary</Text>
+        </View>
+      </SafeAreaView>
       <ScrollView contentContainerStyle={styles.content}>
-        <Text style={typography.display}>{getGreeting()}!</Text>
+        <View style={styles.greetingRow}>
+          <Text style={typography.display}>{getGreeting()}!</Text>
+          <Ionicons name="paw" size={28} color={colors.accent} />
+        </View>
 
         {weatherLoading && (
           <ActivityIndicator size="large" color={colors.primary} />
@@ -78,11 +93,13 @@ export default function TodayScreen() {
               }}
               style={styles.icon}
             />
-            <Text style={typography.title}>{weather.temperature}°C</Text>
-            <Text style={[typography.body, { color: colors.textMuted }]}>
+            <Text style={[typography.title, { color: colors.textOnPrimary }]}>
+              {weather.temperature}°C
+            </Text>
+            <Text style={[typography.body, { color: colors.textOnPrimary }]}>
               {weather.description}
             </Text>
-            <Text style={typography.caption}>
+            <Text style={[typography.caption, { color: colors.textOnPrimary }]}>
               {weather.temperature > 15
                 ? "Good weather for a walk! 🐾"
                 : "A bit chilly! Maybe a shorter walk today :) 🧣"}
@@ -91,16 +108,22 @@ export default function TodayScreen() {
         )}
 
         <View style={styles.statsRow}>
-          <View style={styles.statBox}>
-            <Text style={typography.title}>{pets.length}</Text>
-            <Text style={typography.caption}>
+          <View style={[styles.statBox, { backgroundColor: colors.navy }]}>
+            <Text style={[typography.title, { color: colors.textOnPrimary }]}>
+              {pets.length}
+            </Text>
+            <Text style={[typography.caption, { color: colors.border }]}>
               {pets.length === 1 ? "pet" : "pets"}
             </Text>
           </View>
-          <View style={styles.statBox}>
-            <Text style={typography.title}>{activities.length}</Text>
-            <Text style={typography.caption}>
-              {activities.length === 1 ? "entry logged" : "entries logged"}
+          <View style={[styles.statBox, { backgroundColor: colors.accent }]}>
+            <Text style={[typography.title, { color: colors.textOnAccent }]}>
+              {activities.length}
+            </Text>
+            <Text style={[typography.caption, { color: colors.textOnAccent }]}>
+              {activities.length === 1
+                ? "activity logged"
+                : "activities logged"}
             </Text>
           </View>
         </View>
@@ -126,18 +149,31 @@ export default function TodayScreen() {
           </View>
         )}
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   safe: { flex: 1, backgroundColor: colors.background },
+  screen: { flex: 1, backgroundColor: colors.background },
+  headerSafe: { backgroundColor: colors.primary },
+  header: {
+    backgroundColor: colors.primary,
+    paddingVertical: spacing.lg,
+    paddingHorizontal: spacing.xl,
+  },
+  headerTitle: {
+    fontFamily: typography.title.fontFamily,
+    fontSize: 26,
+    color: colors.textOnPrimary,
+    letterSpacing: 0.5,
+  },
   content: { padding: spacing.xl, gap: spacing.lg },
+  greetingRow: { flexDirection: "row", alignItems: "center", gap: spacing.sm },
   card: {
-    backgroundColor: colors.surface,
+    backgroundColor: colors.primary,
     borderRadius: radius.lg,
-    borderWidth: 1,
-    borderColor: colors.border,
+    ...shadow,
     padding: spacing.xl,
     alignItems: "center",
     gap: spacing.sm,
@@ -146,10 +182,9 @@ const styles = StyleSheet.create({
   statsRow: { flexDirection: "row", gap: spacing.md },
   statBox: {
     flex: 1,
-    backgroundColor: colors.surface,
+    // backgroundColor: colors.accent,
     borderRadius: radius.lg,
-    borderWidth: 1,
-    borderColor: colors.border,
+    ...shadow,
     padding: spacing.lg,
     alignItems: "center",
     gap: spacing.xs,

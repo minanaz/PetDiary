@@ -9,8 +9,19 @@ import Animated, {
   withTiming,
 } from "react-native-reanimated";
 
-import { colors, radius, spacing, typography } from "../constants/theme";
-import { ACTIVITY_LABELS, type Activity } from "../types/activity";
+import { Ionicons } from "@expo/vector-icons";
+import {
+  colors,
+  radius,
+  shadow,
+  spacing,
+  typography,
+} from "../constants/theme";
+import {
+  ACTIVITY_ICONS,
+  ACTIVITY_LABELS,
+  type Activity,
+} from "../types/activity";
 
 interface ActivityCardProps {
   activity: Activity;
@@ -76,9 +87,16 @@ export function ActivityCard({
             />
           )}
           <View style={styles.info}>
-            <Text style={typography.heading}>
-              {ACTIVITY_LABELS[activity.type]}
-            </Text>
+            <View style={styles.titleRow}>
+              <Ionicons
+                name={ACTIVITY_ICONS[activity.type] as any}
+                size={20}
+                color={colors.primary}
+              />
+              <Text style={typography.heading}>
+                {ACTIVITY_LABELS[activity.type]}
+              </Text>
+            </View>
             <Text style={typography.caption}>
               {petName} · {formattedDate}
             </Text>
@@ -106,11 +124,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: colors.surface,
     borderRadius: radius.lg,
-    borderWidth: 1,
-    borderColor: colors.border,
+    ...shadow,
     padding: spacing.md,
     gap: spacing.md,
   },
   thumbnail: { width: 48, height: 48, borderRadius: radius.sm },
   info: { flex: 1, gap: spacing.xs },
+  titleRow: { flexDirection: "row", alignItems: "center", gap: spacing.xs },
 });

@@ -16,3 +16,11 @@ export const ACTIVITY_LABELS: Record<ActivityType, string> = {
   vet: "Vet visit",
   play: "Play",
 };
+
+export const ACTIVITY_ICONS: Record<ActivityType, string> = {
+  meal: "restaurant-outline",
+  walk: "walk-outline",
+  med: "medkit-outline",
+  vet: "medical-outline",
+  play: "tennisball-outline",
+};
