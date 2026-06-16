@@ -4,6 +4,7 @@ import * as ImagePicker from "expo-image-picker";
 import { router, useLocalSearchParams } from "expo-router";
 import { useState } from "react";
 import {
+  Alert,
   Pressable,
   ScrollView,
   StyleSheet,
@@ -12,6 +13,7 @@ import {
   View,
 } from "react-native";
 
+import { AnimatedButton } from "@/components/AnimatedButton";
 import { colors, radius, spacing, typography } from "@/constants/theme";
 import { usePets } from "@/context/PetContext";
 import { PetGender } from "@/types/pet";
@@ -38,25 +40,36 @@ export default function EditPetScreen() {
   }
 
   const pickImage = async (useCamera: boolean) => {
-    const permissionResult = useCamera
-      ? await ImagePicker.requestCameraPermissionsAsync()
-      : await ImagePicker.requestMediaLibraryPermissionsAsync();
+    try {
+      const permissionResult = useCamera
+        ? await ImagePicker.requestCameraPermissionsAsync()
+        : await ImagePicker.requestMediaLibraryPermissionsAsync();
 
-    if (!permissionResult.granted) return;
+      if (!permissionResult.granted) return;
 
-    const result = useCamera
-      ? await ImagePicker.launchCameraAsync({ quality: 0.5 })
-      : await ImagePicker.launchImageLibraryAsync({ quality: 0.5 });
+      const result = useCamera
+        ? await ImagePicker.launchCameraAsync({ quality: 0.5 })
+        : await ImagePicker.launchImageLibraryAsync({ quality: 0.5 });
 
-    if (result.canceled) return;
+      if (result.canceled) return;
 
-    const tempUri = result.assets[0].uri;
-    const permanentUri = await saveImageToDevice(tempUri);
-    setPhotoUri(permanentUri);
+      const tempUri = result.assets[0].uri;
+      const permanentUri = await saveImageToDevice(tempUri);
+      setPhotoUri(permanentUri);
+    } catch (error) {
+      console.error("Failed to pick photo", error);
+      Alert.alert(
+        "Photo error",
+        "Something went wrong opening the camera or gallery.",
+      );
+    }
   };
 
   const handleSave = () => {
-    if (name.trim() === "" || breed.trim() === "") return;
+    if (name.trim() === "" || breed.trim() === "") {
+      Alert.alert("Missing info", "Please enter at least a name and breed.");
+      return;
+    }
 
     const parsedAge = parseInt(age, 10);
 
@@ -82,26 +95,29 @@ export default function EditPetScreen() {
       {photoUri ? (
         <>
           <Image source={{ uri: photoUri }} style={styles.formPhoto} />
-          <Pressable
+          <AnimatedButton
             onPress={() => setPhotoUri(undefined)}
             style={styles.removePhotoButton}
           >
             <Text style={[typography.bodyMedium, { color: colors.danger }]}>
               Remove photo
             </Text>
-          </Pressable>
+          </AnimatedButton>
         </>
       ) : (
         <View style={styles.row}>
-          <Pressable style={styles.photoButton} onPress={() => pickImage(true)}>
+          <AnimatedButton
+            style={styles.photoButton}
+            onPress={() => pickImage(true)}
+          >
             <Text style={styles.chipText}>Take photo</Text>
-          </Pressable>
-          <Pressable
+          </AnimatedButton>
+          <AnimatedButton
             style={styles.photoButton}
             onPress={() => pickImage(false)}
           >
             <Text style={styles.chipText}>Choose from gallery</Text>
-          </Pressable>
+          </AnimatedButton>
         </View>
       )}
 
@@ -160,11 +176,11 @@ export default function EditPetScreen() {
         multiline
       />
 
-      <Pressable style={styles.saveButton} onPress={handleSave}>
+      <AnimatedButton style={styles.saveButton} onPress={handleSave}>
         <Text style={[typography.bodyMedium, { color: colors.textOnAccent }]}>
           Save
         </Text>
-      </Pressable>
+      </AnimatedButton>
     </ScrollView>
   );
 }

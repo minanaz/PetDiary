@@ -11,6 +11,10 @@ export async function fetchWeather(
   latitude: number,
   longitude: number,
 ): Promise<WeatherData> {
+  if (!API_KEY) {
+    throw new Error("Weather API key is missing. Check your .env file.");
+  }
+
   const url = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&units=metric&appid=${API_KEY}`;
 
   const response = await fetch(url);
@@ -20,6 +24,10 @@ export async function fetchWeather(
   }
 
   const data = await response.json();
+
+  if (!data.main || !data.weather || !data.weather[0]) {
+    throw new Error("Unexpected weather data format");
+  }
 
   return {
     temperature: Math.round(data.main.temp),

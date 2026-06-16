@@ -1,6 +1,13 @@
 import { router } from "expo-router";
 import { useState } from "react";
-import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
+import {
+  Alert,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 
 import { colors, radius, spacing, typography } from "../constants/theme";
 import { usePets } from "../context/PetContext";
@@ -25,27 +32,36 @@ export default function AddEntryScreen() {
   const [photoUri, setPhotoUri] = useState<string | undefined>(undefined);
 
   const pickImage = async (useCamera: boolean) => {
-    const permissionResult = useCamera
-      ? await ImagePicker.requestCameraPermissionsAsync()
-      : await ImagePicker.requestMediaLibraryPermissionsAsync();
+    try {
+      const permissionResult = useCamera
+        ? await ImagePicker.requestCameraPermissionsAsync()
+        : await ImagePicker.requestMediaLibraryPermissionsAsync();
 
-    if (!permissionResult.granted) {
-      return;
+      if (!permissionResult.granted) return;
+
+      const result = useCamera
+        ? await ImagePicker.launchCameraAsync({ quality: 0.5 })
+        : await ImagePicker.launchImageLibraryAsync({ quality: 0.5 });
+
+      if (result.canceled) return;
+
+      const tempUri = result.assets[0].uri;
+      const permanentUri = await saveImageToDevice(tempUri);
+      setPhotoUri(permanentUri);
+    } catch (error) {
+      console.error("Failed to pick photo", error);
+      Alert.alert(
+        "Photo error",
+        "Something went wrong opening the camera or gallery.",
+      );
     }
-
-    const result = useCamera
-      ? await ImagePicker.launchCameraAsync({ quality: 0.5 })
-      : await ImagePicker.launchImageLibraryAsync({ quality: 0.5 });
-
-    if (result.canceled) return;
-
-    const tempUri = result.assets[0].uri;
-    const permanentUri = await saveImageToDevice(tempUri);
-    setPhotoUri(permanentUri);
   };
 
   const handleSave = () => {
-    if (!selectedPetId) return;
+    if (!selectedPetId) {
+      Alert.alert("No pet selected", "Please add a pet first or select one.");
+      return;
+    }
 
     addActivity({
       id: Date.now().toString(),

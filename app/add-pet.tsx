@@ -4,6 +4,7 @@ import * as ImagePicker from "expo-image-picker";
 import { router } from "expo-router";
 import { useState } from "react";
 import {
+  Alert,
   Pressable,
   ScrollView,
   StyleSheet,
@@ -28,33 +29,48 @@ export default function AddPetScreen() {
   const [photoUri, setPhotoUri] = useState<string | undefined>(undefined);
 
   const pickImage = async (useCamera: boolean) => {
-    const permissionResult = useCamera
-      ? await ImagePicker.requestCameraPermissionsAsync()
-      : await ImagePicker.requestMediaLibraryPermissionsAsync();
+    try {
+      const permissionResult = useCamera
+        ? await ImagePicker.requestCameraPermissionsAsync()
+        : await ImagePicker.requestMediaLibraryPermissionsAsync();
 
-    if (!permissionResult.granted) return;
+      if (!permissionResult.granted) return;
 
-    const result = useCamera
-      ? await ImagePicker.launchCameraAsync({ quality: 0.5 })
-      : await ImagePicker.launchImageLibraryAsync({ quality: 0.5 });
+      const result = useCamera
+        ? await ImagePicker.launchCameraAsync({ quality: 0.5 })
+        : await ImagePicker.launchImageLibraryAsync({ quality: 0.5 });
 
-    if (result.canceled) return;
+      if (result.canceled) return;
 
-    const tempUri = result.assets[0].uri;
-    const permanentUri = await saveImageToDevice(tempUri);
-    setPhotoUri(permanentUri);
+      const tempUri = result.assets[0].uri;
+      const permanentUri = await saveImageToDevice(tempUri);
+      setPhotoUri(permanentUri);
+    } catch (error) {
+      console.error("Failed to pick photo", error);
+      Alert.alert(
+        "Photo error",
+        "Something went wrong opening the camera or gallery.",
+      );
+    }
   };
 
   const handleSave = () => {
-    if (name.trim() === "" || breed.trim() === "") return;
+    if (name.trim() === "" || breed.trim() === "") {
+      Alert.alert("Missing info", "Please enter at least a name and breed.");
+      return;
+    }
 
     const parsedAge = parseInt(age, 10);
+    const validAge =
+      !Number.isNaN(parsedAge) && parsedAge >= 0 && parsedAge <= 100
+        ? parsedAge
+        : undefined;
 
     const newPet: Pet = {
       id: Date.now().toString(),
       name: name.trim(),
       breed: breed.trim(),
-      age: Number.isNaN(parsedAge) ? undefined : parsedAge,
+      age: validAge,
       gender,
       notes: notes.trim() === "" ? undefined : notes.trim(),
       photoUri,

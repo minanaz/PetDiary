@@ -48,15 +48,29 @@ export function PetProvider({ children }: { children: ReactNode }) {
   }, []);
 
   useEffect(() => {
-    if (!isLoading) {
-      AsyncStorage.setItem(PETS_KEY, JSON.stringify(pets));
-    }
+    if (isLoading) return;
+
+    const savePets = async () => {
+      try {
+        await AsyncStorage.setItem(PETS_KEY, JSON.stringify(pets));
+      } catch (error) {
+        console.error("Failed to save pets to storage", error);
+      }
+    };
+    savePets();
   }, [pets, isLoading]);
 
   useEffect(() => {
-    if (!isLoading) {
-      AsyncStorage.setItem(ACTIVITIES_KEY, JSON.stringify(activities));
-    }
+    if (isLoading) return;
+
+    const saveActivities = async () => {
+      try {
+        await AsyncStorage.setItem(ACTIVITIES_KEY, JSON.stringify(activities));
+      } catch (error) {
+        console.error("Failed to save activities to storage", error);
+      }
+    };
+    saveActivities();
   }, [activities, isLoading]);
 
   const addPet = (pet: Pet) => {
