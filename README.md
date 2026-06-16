@@ -1,50 +1,126 @@
-# Welcome to your Expo app 👋
+# PetDiary 🐾
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+A small, offline-friendly journal for your pets. You can add your pets, then document their
+daily care: meals, walks, medications, vet visits, and playtime, each with a photo and a
+note. You can also check the live local weather in the Today screen, so you know whether it's a
+good moment for a walk, plus a quick snapshot of your pets and recent activity.
 
-## Get started
+> Built for the React Native (Expo) laboratory project. Single-user, all data
+> stored locally on the device.
 
-1. Install dependencies
+## Features
 
-   ```bash
-   npm install
-   ```
+- Add, edit, and delete pets - name, breed, age, gender, notes, and a photo
+- Log activities per pet (meal, walk, medication, vet visit, play) with an
+  optional photo and note
+- Swipe-to-delete on log entries, with haptic feedback on save/delete
+- A Today dashboard: live weather, pet/entry counts, and recent activity
+- Works fully offline - all data is cached locally and available without
+  internet
+- Smooth entrance animations and tactile button feedback throughout
 
-2. Start the app
+## Tech stack
 
-   ```bash
-   npx expo start
-   ```
+- **Expo** (SDK 54) + **React Native** + **TypeScript**
+- **Expo Router** — file-based navigation (tabs + stack + modals)
+- **Context API** — global state for pets and activities
+- **AsyncStorage** — local persistence
+- **expo-image-picker** + **expo-file-system** — camera & gallery photos
+- **expo-location** — geolocation for weather
+- **expo-haptics** — tactile feedback on key actions
+- **react-native-reanimated** + **react-native-gesture-handler** — animations
+  and swipe-to-delete
+- **OpenWeatherMap** — live weather on the Today screen
+- **Jest** + **React Native Testing Library** — unit and integration tests
+- **ESLint** + **Prettier** — code quality and formatting
 
-In the output, you'll find options to open the app in a
+## Project structure
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
+```
+app/ Expo Router screens (file = route)
+(tabs)/ Today, Pets, Log tab screens
+pet/[id].tsx Pet detail screen
+add-pet.tsx Add pet (modal)
+edit-pet.tsx Edit pet (modal)
+add-entry.tsx Add activity entry (modal)
+components/ Reusable UI (PetCard, ActivityCard, AnimatedButton)
+constants/ Design tokens (theme.ts)
+context/ PetContext — global state + AsyncStorage persistence
+types/ Pet and Activity type definitions
+utils/ Weather API, image saving, greeting helper
+assets/ App icon, splash screen, images
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+## Getting started
 
-## Learn more
+You'll need [Node.js](https://nodejs.org/) (LTS) and the **Expo Go** app on
+your phone.
 
-To learn more about developing your project with Expo, look at the following resources:
+```bash
+# 1. Install dependencies
+npm install
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+# 2. Add your environment file
+cp .env.example .env
+# then open .env and paste in a free OpenWeatherMap API key
+# (get one at https://openweathermap.org/api)
 
-## Join the community
+# 3. Start the dev server
+npx expo start
+```
 
-Join our community of developers creating universal apps.
+Scan the QR code with Expo Go (Android) or the Camera app (iOS) to open it.
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+## Testing
+
+```bash
+npm test
+```
+
+14 tests cover:
+
+- Activity label data,
+- Full pet/activity CRUD lifecycle in `PetContext` (including cascading delete of a pet's activities)
+- Time-based greeting logic
+- Error handling in the weather and image-saving utilities.
+
+## Native features used
+
+- **Camera & photo gallery** (`expo-image-picker`) - attach photos to pets
+  and activity entries
+- **Geolocation** (`expo-location`) - used to fetch local weather
+- **Haptics** (`expo-haptics`) - feedback on save, delete, and selection
+- **On-device storage** (`AsyncStorage`) - all app data persists locally
+
+## Extended criteria implemented
+
+- **C — External API integration**: live weather from OpenWeatherMap, tied
+  directly to the app's purpose (deciding whether it's good weather for a
+  walk)
+- **D — Advanced UX**: entrance animations and swipe-to-delete gestures
+  (Reanimated + Gesture Handler), plus haptic feedback throughout
+
+## Building
+
+A production-ready build can be created with EAS Build:
+
+```bash
+eas build --platform android --profile preview
+```
+
+## Screenshots
+
+**Today** - live weather and a quick snapshot of your pets and recent activity
+![Today screen](assets/screenshots/today.jpg)
+
+**Pets** - your pets at a glance
+![Pets list](assets/screenshots/pets.jpg)
+
+**Pet detail** - full profile, activity history, edit and delete
+![Pet detail](assets/screenshots/pet-detail.jpg)
+
+**Add entry** - log a new activity with a photo
+![Add entry modal](assets/screenshots/add-entry.jpg)
+
+**Delete entry** - delete an activity with swiping gesture
+![Add entry modal](assets/screenshots/delete-entry.jpg)
