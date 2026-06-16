@@ -33,7 +33,7 @@
           "image": "./assets/images/splash-icon.png",
           "imageWidth": 200,
           "resizeMode": "contain",
-          "backgroundColor": "#ffffff",
+          "backgroundColor": "#D8784A",
           "dark": {
             "backgroundColor": "#000000"
           }
@@ -44,6 +44,13 @@
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
-    }
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "e7aa17f0-97ae-4de4-bba1-a8136976a70b"
+      }
+    },
+    "owner": "minanaz"
   }
 }

@@ -35,6 +35,7 @@ export function PetProvider({ children }: { children: ReactNode }) {
     const loadData = async () => {
       try {
         const storedPets = await AsyncStorage.getItem(PETS_KEY);
+        console.log("Loaded from storage:", storedPets);
         const storedActivities = await AsyncStorage.getItem(ACTIVITIES_KEY);
         if (storedPets) setPets(JSON.parse(storedPets));
         if (storedActivities) setActivities(JSON.parse(storedActivities));
