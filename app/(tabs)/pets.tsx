@@ -2,6 +2,7 @@ import { router } from "expo-router";
 import { FlatList, Pressable, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
+import { AnimatedButton } from "@/components/AnimatedButton";
 import { PetCard } from "../../components/PetCard";
 import { colors, radius, spacing, typography } from "../../constants/theme";
 import { usePets } from "../../context/PetContext";
@@ -49,9 +50,12 @@ export default function PetsScreen() {
       />
 
       {pets.length > 0 && (
-        <Pressable style={styles.fab} onPress={() => router.push("/add-pet")}>
+        <AnimatedButton
+          style={styles.fab}
+          onPress={() => router.push("/add-pet")}
+        >
           <Text style={styles.fabText}>+</Text>
-        </Pressable>
+        </AnimatedButton>
       )}
     </SafeAreaView>
   );

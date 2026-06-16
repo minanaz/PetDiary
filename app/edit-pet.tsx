@@ -1,3 +1,4 @@
+import * as Haptics from "expo-haptics";
 import { Image } from "expo-image";
 import * as ImagePicker from "expo-image-picker";
 import { router, useLocalSearchParams } from "expo-router";
@@ -70,6 +71,7 @@ export default function EditPetScreen() {
       createdAt: pet.createdAt,
     });
 
+    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
     router.back();
   };
 
@@ -130,7 +132,10 @@ export default function EditPetScreen() {
         {(["male", "female", "unknown"] as PetGender[]).map((g) => (
           <Pressable
             key={g}
-            onPress={() => setGender(g)}
+            onPress={() => {
+              Haptics.selectionAsync();
+              setGender(g);
+            }}
             style={[styles.chip, gender === g && styles.chipSelected]}
           >
             <Text

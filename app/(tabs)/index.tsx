@@ -10,6 +10,7 @@ import {
 } from "react-native";
 
 import { Ionicons } from "@expo/vector-icons";
+import Animated, { FadeInDown } from "react-native-reanimated";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { ActivityCard } from "../../components/ActivityCard";
 import {
@@ -86,7 +87,7 @@ export default function TodayScreen() {
         )}
 
         {!weatherLoading && weather && (
-          <View style={styles.card}>
+          <Animated.View entering={FadeInDown} style={styles.card}>
             <Image
               source={{
                 uri: `https://openweathermap.org/img/wn/${weather.icon}@2x.png`,
@@ -104,19 +105,25 @@ export default function TodayScreen() {
                 ? "Good weather for a walk! 🐾"
                 : "A bit chilly! Maybe a shorter walk today :) 🧣"}
             </Text>
-          </View>
+          </Animated.View>
         )}
 
         <View style={styles.statsRow}>
-          <View style={[styles.statBox, { backgroundColor: colors.navy }]}>
+          <Animated.View
+            entering={FadeInDown.delay(100)}
+            style={[styles.statBox, { backgroundColor: colors.navy }]}
+          >
             <Text style={[typography.title, { color: colors.textOnPrimary }]}>
               {pets.length}
             </Text>
             <Text style={[typography.caption, { color: colors.border }]}>
               {pets.length === 1 ? "pet" : "pets"}
             </Text>
-          </View>
-          <View style={[styles.statBox, { backgroundColor: colors.accent }]}>
+          </Animated.View>
+          <Animated.View
+            entering={FadeInDown.delay(200)}
+            style={[styles.statBox, { backgroundColor: colors.accent }]}
+          >
             <Text style={[typography.title, { color: colors.textOnAccent }]}>
               {activities.length}
             </Text>
@@ -125,7 +132,7 @@ export default function TodayScreen() {
                 ? "activity logged"
                 : "activities logged"}
             </Text>
-          </View>
+          </Animated.View>
         </View>
 
         <Text style={typography.heading}>Recent activity</Text>

@@ -1,6 +1,7 @@
+import { AnimatedButton } from "@/components/AnimatedButton";
 import * as Haptics from "expo-haptics";
 import { router } from "expo-router";
-import { FlatList, Pressable, StyleSheet, Text, View } from "react-native";
+import { FlatList, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { ActivityCard } from "../../components/ActivityCard";
 import { colors, radius, spacing, typography } from "../../constants/theme";
@@ -47,9 +48,12 @@ export default function LogScreen() {
         }}
         ItemSeparatorComponent={() => <View style={{ height: spacing.sm }} />}
       />
-      <Pressable style={styles.fab} onPress={() => router.push("/add-entry")}>
+      <AnimatedButton
+        style={styles.fab}
+        onPress={() => router.push("/add-entry")}
+      >
         <Text style={styles.fabText}>+</Text>
-      </Pressable>
+      </AnimatedButton>
     </SafeAreaView>
   );
 }

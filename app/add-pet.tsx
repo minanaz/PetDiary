@@ -1,3 +1,4 @@
+import * as Haptics from "expo-haptics";
 import { Image } from "expo-image";
 import * as ImagePicker from "expo-image-picker";
 import { router } from "expo-router";
@@ -11,6 +12,7 @@ import {
   View,
 } from "react-native";
 
+import { AnimatedButton } from "@/components/AnimatedButton";
 import { colors, radius, spacing, typography } from "@/constants/theme";
 import { usePets } from "@/context/PetContext";
 import { Pet, PetGender } from "@/types/pet";
@@ -60,6 +62,7 @@ export default function AddPetScreen() {
     };
 
     addPet(newPet);
+    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
     router.back();
   };
 
@@ -70,26 +73,29 @@ export default function AddPetScreen() {
       {photoUri ? (
         <>
           <Image source={{ uri: photoUri }} style={styles.formPhoto} />
-          <Pressable
+          <AnimatedButton
             onPress={() => setPhotoUri(undefined)}
             style={styles.removePhotoButton}
           >
             <Text style={[typography.bodyMedium, { color: colors.danger }]}>
               Remove photo
             </Text>
-          </Pressable>
+          </AnimatedButton>
         </>
       ) : (
         <View style={styles.row}>
-          <Pressable style={styles.photoButton} onPress={() => pickImage(true)}>
+          <AnimatedButton
+            style={styles.photoButton}
+            onPress={() => pickImage(true)}
+          >
             <Text style={styles.chipText}>Take photo</Text>
-          </Pressable>
-          <Pressable
+          </AnimatedButton>
+          <AnimatedButton
             style={styles.photoButton}
             onPress={() => pickImage(false)}
           >
             <Text style={styles.chipText}>Choose from gallery</Text>
-          </Pressable>
+          </AnimatedButton>
         </View>
       )}
 
@@ -120,7 +126,10 @@ export default function AddPetScreen() {
         {(["male", "female", "unknown"] as PetGender[]).map((g) => (
           <Pressable
             key={g}
-            onPress={() => setGender(g)}
+            onPress={() => {
+              Haptics.selectionAsync();
+              setGender(g);
+            }}
             style={[styles.chip, gender === g && styles.chipSelected]}
           >
             <Text
@@ -145,11 +154,11 @@ export default function AddPetScreen() {
         multiline
       />
 
-      <Pressable style={styles.saveButton} onPress={handleSave}>
+      <AnimatedButton style={styles.saveButton} onPress={handleSave}>
         <Text style={[typography.bodyMedium, { color: colors.textOnAccent }]}>
           Save
         </Text>
-      </Pressable>
+      </AnimatedButton>
     </ScrollView>
   );
 }

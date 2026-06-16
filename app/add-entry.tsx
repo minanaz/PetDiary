@@ -9,6 +9,7 @@ import { ACTIVITY_LABELS, type ActivityType } from "../types/activity";
 import { Image } from "expo-image";
 import * as ImagePicker from "expo-image-picker";
 
+import { AnimatedButton } from "@/components/AnimatedButton";
 import * as Haptics from "expo-haptics";
 import { saveImageToDevice } from "../utils/saveImage";
 
@@ -76,7 +77,10 @@ export default function AddEntryScreen() {
         {pets.map((pet) => (
           <Pressable
             key={pet.id}
-            onPress={() => setSelectedPetId(pet.id)}
+            onPress={() => {
+              Haptics.selectionAsync();
+              setSelectedPetId(pet.id);
+            }}
             style={[
               styles.chip,
               selectedPetId === pet.id && styles.chipSelected,
@@ -100,7 +104,10 @@ export default function AddEntryScreen() {
         {ACTIVITY_TYPES.map((type) => (
           <Pressable
             key={type}
-            onPress={() => setSelectedType(type)}
+            onPress={() => {
+              Haptics.selectionAsync();
+              setSelectedType(type);
+            }}
             style={[styles.chip, selectedType === type && styles.chipSelected]}
           >
             <Text
@@ -120,30 +127,36 @@ export default function AddEntryScreen() {
       {photoUri && (
         <>
           <Image source={{ uri: photoUri }} style={styles.preview} />
-          <Pressable
+          <AnimatedButton
             onPress={() => setPhotoUri(undefined)}
             style={styles.removeButton}
           >
             <Text style={[typography.bodyMedium, { color: colors.danger }]}>
               Remove photo
             </Text>
-          </Pressable>
+          </AnimatedButton>
         </>
       )}
       <View style={styles.row}>
-        <Pressable style={styles.photoButton} onPress={() => pickImage(true)}>
+        <AnimatedButton
+          style={styles.photoButton}
+          onPress={() => pickImage(true)}
+        >
           <Text style={styles.chipText}>Take photo</Text>
-        </Pressable>
-        <Pressable style={styles.photoButton} onPress={() => pickImage(false)}>
+        </AnimatedButton>
+        <AnimatedButton
+          style={styles.photoButton}
+          onPress={() => pickImage(false)}
+        >
           <Text style={styles.chipText}>Choose from gallery</Text>
-        </Pressable>
+        </AnimatedButton>
       </View>
 
-      <Pressable style={styles.saveButton} onPress={handleSave}>
+      <AnimatedButton style={styles.saveButton} onPress={handleSave}>
         <Text style={[typography.bodyMedium, { color: colors.textOnAccent }]}>
           Save
         </Text>
-      </Pressable>
+      </AnimatedButton>
     </ScrollView>
   );
 }
