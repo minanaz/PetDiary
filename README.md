@@ -102,11 +102,13 @@ npm test
 
 ## Building
 
-A production-ready build can be created with EAS Build:
+A production-ready preview build was created with EAS Build:
 
 ```bash
-eas build --platform android --profile preview
+   eas build --platform android --profile preview
 ```
+
+[View the completed build](https://expo.dev/accounts/minanaz/projects/PetDiary/builds/59b90856-abcf-41de-b4a1-cabeaa6a062f)
 
 ## Screenshots
 
